@@ -7,13 +7,13 @@
 </head>
 <body>
     <h1>Student Registration</h1>
-    <form action="" method="post">
+    <form action="mark.php" method="post">
         Roll Number:
         <input type="number" name="roll" id=""><br><br>
         Name:
         <input type="text" name="name" id=""><br><br>
         Address:
-        <textarea name="address" id=""></textarea><br><br>
+        <textarea name="adrs" id=""></textarea><br><br>
         Phone Number:
         <input type="number" name="phone" id=""><br><br>
         Username:
