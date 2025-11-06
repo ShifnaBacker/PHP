@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1>Student Registration</h1>
-    <form action="mark.php" method="post">
+    <form action="" method="post">
         Roll Number:
         <input type="number" name="roll" id=""><br><br>
         Name:
@@ -22,7 +22,7 @@
         <input type="password" name="pass" id=""><br><br>
         Retype Password:
         <input type="password" name="repass" id=""><br><br>
-        <input type="submit" value="Register">
+        <input type="submit" value="Register" name="regstr">
         <input type="reset" value="Reset">
     </form>
 </body>
