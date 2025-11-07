@@ -15,7 +15,7 @@
             die("Connection failed: " . mysqli_connect_error());
         }
 
-        $sql = "SELECT rollno FROM stud";
+        $sql = "SELECT rollno FROM stud_det";
         $result = mysqli_query($con, $sql);
         if(mysqli_num_rows($result) > 0){
             while($row = mysqli_fetch_assoc($result)){
@@ -31,7 +31,10 @@
     <?php
     if(isset($_POST["search"]) && !empty($_POST["roll"])) {
         $roll = $_POST["roll"];
-        $sql = "SELECT name, mark1, mark2, mark3 FROM stud WHERE rollno='$roll'";
+        $sql = "SELECT s.name, m.mark1, m.mark2, m.mark3 
+        FROM mark m 
+        INNER JOIN stud_det s ON m.rollno = s.rollno 
+        WHERE m.rollno = '$roll'";
         $result = mysqli_query($con, $sql);
         if(mysqli_num_rows($result) > 0){
             $row = mysqli_fetch_assoc($result);
@@ -54,7 +57,7 @@
         $mark2 = $_POST["mark2"];
         $mark3 = $_POST["mark3"];
         $tmark = $mark1+$mark2+$mark3;
-        $sql = "UPDATE stud SET mark1='$mark1', mark2='$mark2',mark3='$mark3', total_mark='$tmark' WHERE rollno='$roll'";
+        $sql = "UPDATE mark SET mark1='$mark1', mark2='$mark2',mark3='$mark3', total_mark='$tmark' WHERE rollno='$roll'";
         if(mysqli_query($con, $sql)){
             echo "<br><br><b>Marks updated successfully for Roll No $roll!</b>";
         } else {

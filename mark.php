@@ -1,44 +1,44 @@
-<?php
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["roll"]) && !isset($_POST["submit_mark"])) {
-
-    $roll = $_POST["roll"];
-    $name = $_POST["name"];
-    $adrs = $_POST["adrs"];
-    $phone = $_POST["phone"];
-    $user = $_POST["user"];
-    $pass = $_POST["pass"];
-    $repass = $_POST["repass"];
-
-    if ($pass !== $repass) {
-        die("<h3 style='color:red;'>Passwords do not match!</h3>");
-    }
-
-    $con = mysqli_connect('localhost', 'root', '', 'student');
-    if (!$con) {
-        die("Connection failed: " . mysqli_connect_error());
-    }
-
-    $sql = "INSERT INTO stud_det (rollno, name, address, phone, username, password)
-            VALUES ($roll, '$name', '$adrs', '$phone', '$user', '$pass')";
-
-    if (mysqli_query($con, $sql)) {
-        echo "<h3 style='color:green;'>Registration successful!</h3>";
-    } else {
-        die("Error inserting student details: " . mysqli_error($con));
-    }
-
-    echo "
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
     <h1>Mark Entry</h1>
-    <form action='mark.php' method='post'>
+    <form action="" method='post'>
         <input type='hidden' name='roll' value='$roll'>
-        Roll Number: $roll <br><br>
+        Roll Number:
+    <select name='roll' id=''>
+        <option value="">--Select Roll Number--</option>
+        <?php
+        $con = mysqli_connect('localhost', 'root', '', 'student');
+        if(!$con){
+            die("Connection failed: " . mysqli_connect_error());
+        }
+
+        $sql = "SELECT rollno FROM stud_det";
+        $result = mysqli_query($con, $sql);
+        if(mysqli_num_rows($result) > 0){
+            while($row = mysqli_fetch_assoc($result)){
+                echo "<option value='".$row["rollno"]."'>".$row["rollno"]."</option>";
+            }
+        }
+        ?>
+    </select><br><br>
         Mark 1: <input type='number' name='mark1' required><br><br>
         Mark 2: <input type='number' name='mark2' required><br><br>
         Mark 3: <input type='number' name='mark3' required><br><br>
         <input type='submit' name='submit_mark' value='Submit Marks'>
-    </form>";
-}
-?>
+    </form>
+</body>
+</html>
+
+    
+    
+
+
 <?php
 if (isset($_POST["submit_mark"])) {
     $roll = $_POST["roll"];
