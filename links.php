@@ -12,6 +12,7 @@
 <li><a href="mark.php" target="frame1">Mark Entry</a></li>
 <li><a href="mark update.php" target="frame1">Mark Update</a></li>
 <li><a href="student details.php" target="frame1">Student Details</a></li>
+<li><a href="progress card.php" target="frame1">Progress Card</a></li>
 </ul>    
 </body>
 </html>
