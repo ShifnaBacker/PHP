@@ -2,35 +2,23 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Home Page</title>
+    <title>Admin Home</title>
+    <link rel="stylesheet" href="style.css">
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            height: 100vh;              /* full page height */
-            display: flex;              /* side-by-side layout */
-        }
+        body { margin:0; padding:0; height:100vh; display:flex; }
+        iframe { height:100%; border:none; }
 
-        iframe {
-            border: none;
-            height: 100%;
-        }
-
-        /* Left frame (menu/navigation) */
-        #left-frame {
-            width: 25%;
-            border-right: 3px solid #555;  /* vertical divider */
-        }
-
-        /* Right frame (main content) */
-        #right-frame {
-            width: 75%;
-        }
+        #left-frame { width:25%; border-right:3px solid #555; }
+        #right-frame { width:75%; }
     </style>
 </head>
 <body>
+
+    <!-- Left menu iframe -->
     <iframe id="left-frame" src="links.php"></iframe>
-    <iframe id="right-frame" src="student registration.php" name="frame1"></iframe>
+
+    <!-- Right content iframe -->
+    <iframe id="right-frame" name="frame1" src="student_registration.php"></iframe>
+
 </body>
 </html>

@@ -1,73 +1,74 @@
+
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Update Student Marks</title>
+  <meta charset="utf-8">
+  <title>Update Marks</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<form action="" method="post">
-    Roll Number:
-    <select name='roll' id=''>
-        <option value="">--Select Roll Number--</option>
-        <?php
-        $con = mysqli_connect('localhost', 'root', '', 'student');
-        if(!$con){
-            die("Connection failed: " . mysqli_connect_error());
-        }
+<div class="card">
+  <h2>Update Student Marks</h2>
 
-        $sql = "SELECT rollno FROM stud_det";
-        $result = mysqli_query($con, $sql);
-        if(mysqli_num_rows($result) > 0){
-            while($row = mysqli_fetch_assoc($result)){
-                // Keep selected option after search
-                $selected = (isset($_POST["roll"]) && $_POST["roll"] == $row["rollno"]) ? "selected" : "";
-                echo "<option value='".$row["rollno"]."' $selected>".$row["rollno"]."</option>";
-            }
-        }
-        ?>
+  <form method="post">
+    <label>Roll Number</label>
+    <select name="roll" required>
+      <option value="">--Select Roll Number--</option>
+      <?php
+      $con = mysqli_connect('localhost','root','','student');
+      $sql = "SELECT rollno FROM stud_det";
+      $res = mysqli_query($con,$sql);
+      while($r = mysqli_fetch_assoc($res)){
+          $sel = (isset($_POST['roll']) && $_POST['roll']==$r['rollno']) ? "selected" : "";
+          echo "<option value='{$r['rollno']}' $sel>{$r['rollno']}</option>";
+      }
+      ?>
     </select>
-    <input type="submit" name="search" value="Search"><br><br>
+
+    <div class="form-actions">
+      <input class="btn btn-primary" type="submit" name="search" value="Search">
+    </div>
 
     <?php
     if(isset($_POST["search"]) && !empty($_POST["roll"])) {
-        $roll = $_POST["roll"];
+        $roll = (int)$_POST["roll"];
         $sql = "SELECT s.name, m.mark1, m.mark2, m.mark3 
-        FROM mark m 
-        INNER JOIN stud_det s ON m.rollno = s.rollno 
-        WHERE m.rollno = '$roll'";
+                FROM mark m 
+                INNER JOIN stud_det s ON m.rollno = s.rollno 
+                WHERE m.rollno = $roll";
         $result = mysqli_query($con, $sql);
         if(mysqli_num_rows($result) > 0){
             $row = mysqli_fetch_assoc($result);
-            echo "Name: <b>".$row["name"]."</b><br><br>";
-            echo "Mark 1: <input type='number' name='mark1' value='".$row["mark1"]."'><br><br>";
-            echo "Mark 2: <input type='number' name='mark2' value='".$row["mark2"]."'><br><br>";
-            echo "Mark 3: <input type='number' name='mark3' value='".$row["mark3"]."'><br><br>";
-            echo "<input type='hidden' name='roll' value='".$roll."'>";
-            echo "<input type='submit' name='update' value='Update'>";
-            echo "<input type='reset' value='Reset'>";
+            echo "<div class='form-row'><b>Name: </b> {$row['name']}</div>";
+            echo "<label>Mark 1</label><input type='number' name='mark1' value='".$row["mark1"]."'>";
+            echo "<label>Mark 2</label><input type='number' name='mark2' value='".$row["mark2"]."'>";
+            echo "<label>Mark 3</label><input type='number' name='mark3' value='".$row["mark3"]."'>";
+            echo "<input type='hidden' name='roll' value='$roll'><br>";
+            echo "<div class='form-actions'><input class='btn btn-primary' type='submit' name='update' value='Update'>
+                  <input class='btn btn-muted' type='reset' value='Reset'></div>";
         } else {
-            echo "No record found for Roll No $roll.";
+            echo "<div class='msg'>No record found for Roll No $roll.</div>";
         }
     }
 
-    // Handle update
     if(isset($_POST["update"])) {
-        $roll = $_POST["roll"];
-        $mark1 = $_POST["mark1"];
-        $mark2 = $_POST["mark2"];
-        $mark3 = $_POST["mark3"];
+        $roll = (int)$_POST["roll"];
+        $mark1 = (int)$_POST["mark1"];
+        $mark2 = (int)$_POST["mark2"];
+        $mark3 = (int)$_POST["mark3"];
         $tmark = $mark1+$mark2+$mark3;
-        $sql = "UPDATE mark SET mark1='$mark1', mark2='$mark2',mark3='$mark3', total_mark='$tmark' WHERE rollno='$roll'";
+        $sql = "UPDATE mark SET mark1=$mark1, mark2=$mark2, mark3=$mark3, total_mark=$tmark WHERE rollno=$roll";
         if(mysqli_query($con, $sql)){
-            echo "<br><br><b>Marks updated successfully for Roll No $roll!</b>";
+            echo "<div class='msg success'>Marks updated successfully for Roll No $roll!</div>";
         } else {
-            echo "<br><br>Error updating record: " . mysqli_error($con);
+            echo "<div class='msg error'>Error updating record: " . mysqli_error($con) . "</div>";
         }
     }
-
     mysqli_close($con);
     ?>
-</form>
+  </form>
+</div>
 
 </body>
 </html>
